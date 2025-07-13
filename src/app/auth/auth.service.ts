@@ -13,5 +13,6 @@ export class AuthService {
     fd.append('username', payload.username)
     fd.append('password', payload.password)
     return this.http.post('https://icherniakov.ru/yt-course/auth/token', fd)
+    
   }
 }
