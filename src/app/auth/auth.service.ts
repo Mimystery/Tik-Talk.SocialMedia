@@ -19,6 +19,7 @@ export class AuthService {
   get isAuth(){
     if(!this.token){
       this.token = this.cookieService.get('token')
+      this.refteshToken = this.cookieService.get('refreshToken')
     }
     return !!this.token;
   }
@@ -34,7 +35,7 @@ export class AuthService {
     )
   }
   refreshAuthToken() {
-    return this.http.post<TokenResponse>('https://icherniakov.ru/yt-course/auth/token',
+    return this.http.post<TokenResponse>('https://icherniakov.ru/yt-course/auth/refresh',
       {
         refresh_token: this.refteshToken,
       }).pipe(

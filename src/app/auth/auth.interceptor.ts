@@ -4,6 +4,8 @@ import { AuthService } from "./auth.service";
 import { catchError, switchMap, throwError } from "rxjs";
 import { Router } from "@angular/router";
 
+let isRefreshing = false
+
 export const authTokenInterceptor: HttpInterceptorFn = (req, next) => {
     const authService = inject(AuthService)
     const token = authService.token
@@ -11,12 +13,14 @@ export const authTokenInterceptor: HttpInterceptorFn = (req, next) => {
 
     if(!token) return next(req)
 
-    addToken(req, token)
+    if(isRefreshing){
+        return refreshAndProceed(authService, req, next)
+    }
 
     return next(addToken(req, token)).pipe(
         catchError(error => {
             if(error.status === 403){
-                refreshAndProceed(authService, req, next)
+                return refreshAndProceed(authService, req, next)
             }
 
             //router.navigate(['/login'])
@@ -30,11 +34,18 @@ const refreshAndProceed = (
     req: HttpRequest<any>, 
     next: HttpHandlerFn) => 
 {
-    return authService.refreshAuthToken().pipe(
+    if(!isRefreshing){
+        isRefreshing = true
+
+        return authService.refreshAuthToken().pipe(
         switchMap(res => {
+            isRefreshing = false
             return next(addToken(req, res.access_token))
         })
     )
+    }
+
+    return next(addToken(req, authService.token!))
 }
 
 const addToken = (req: HttpRequest<any>, token: string) => {
