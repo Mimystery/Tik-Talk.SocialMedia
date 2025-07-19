@@ -9,5 +9,21 @@ import { SvgIcon } from "../svg-icon/svg-icon";
   styleUrl: './sidebar.scss'
 })
 export class Sidebar {
-
+  menuItems = [
+    {
+      label: 'Main page',
+      icon: 'home',
+      link: ''
+    },
+    {
+      label: 'Chats',
+      icon: 'chat',
+      link: ''
+    },
+    {
+      label: 'Search',
+      icon: 'search',
+      link: ''
+    },
+  ]
 }
