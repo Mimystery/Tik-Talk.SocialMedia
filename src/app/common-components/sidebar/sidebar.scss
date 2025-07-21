@@ -37,3 +37,23 @@
     height: 16px;
     }
 }
+
+.sidebar-footer{
+    background: var(--dark-hover-color);
+}
+
+.to-subscribers{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.to-subscribers-link{
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.to-subscribers-icon{
+    width: 18px;
+    height: 18px;
+}
